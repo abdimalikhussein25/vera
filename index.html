@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VERA Nutrition — Pure creatine. Pure whey. Purity in every gram.</title>
+<meta name="description" content="VERA Nutrition is opening soon with clean supplements and Nordic's first Halal certified collagen & vitamins, in partnership with HalaVit. Made in Sweden.">
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;0,6..96,600;0,6..96,700;0,6..96,800;1,6..96,500&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#07080A;
+    --panel:#101314;
+    --panel-2:#14181A;
+    --teal:#4FC7AA;
+    --teal-bright:#5FE3C0;
+    --gold:#CBA135;
+    --gold-soft:#E4C877;
+    --ink:#F5F6F3;
+    --muted:#9AA5A0;
+    --line:rgba(245,246,243,0.10);
+    --max:1220px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--ink);
+    font-family:'Manrope', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+  h1,h2,h3{
+    font-family:'Bodoni Moda', serif;
+    font-weight:600;
+    letter-spacing:-0.01em;
+    margin:0;
+    color:var(--ink);
+  }
+  .mono{
+    font-family:'IBM Plex Mono', monospace;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 28px;}
+
+  a:focus-visible, button:focus-visible, input:focus-visible{
+    outline:2px solid var(--teal-bright);
+    outline-offset:3px;
+  }
+
+  ::selection{background:var(--teal); color:#07080A;}
+
+  /* ---------- Top bar ---------- */
+  .topbar{
+    background:#000; color:var(--muted);
+    border-bottom:1px solid var(--line);
+  }
+  .topbar .wrap{
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 28px; font-size:0.68rem;
+  }
+  .topbar .dot{color:var(--gold);}
+
+  /* ---------- Header ---------- */
+  header{
+    position:sticky; top:0; z-index:50;
+    background:rgba(7,8,10,0.72);
+    backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--line);
+  }
+  .nav{
+    display:flex; align-items:center; justify-content:space-between;
+    padding:14px 28px;
+    max-width:var(--max); margin:0 auto;
+  }
+  .brand{display:flex; align-items:center; text-decoration:none;}
+  .brand img{height:30px; width:auto;}
+  .navlinks{display:flex; gap:34px; list-style:none; margin:0; padding:0; align-items:center;}
+  .navlinks a{
+    text-decoration:none; font-size:0.78rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--ink); opacity:0.7;
+    transition:opacity 0.2s ease, color 0.2s ease;
+  }
+  .navlinks a:hover{opacity:1; color:var(--teal-bright);}
+  @media (max-width:820px){ .navlinks li:not(:last-child){display:none;} }
+  .nav-cta{
+    font-size:0.74rem; letter-spacing:0.08em; text-transform:uppercase;
+    background:var(--teal); color:#07120E;
+    padding:11px 20px; border-radius:2px; text-decoration:none;
+    font-weight:700; white-space:nowrap;
+  }
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;
+    min-height:92vh;
+    display:flex; align-items:flex-end;
+    background-image:
+      linear-gradient(180deg, rgba(7,8,10,0.35) 0%, rgba(7,8,10,0.55) 40%, rgba(7,8,10,0.97) 92%),
+      url('assets/hero-group.jpg');
+    background-size:cover;
+    background-position:center 30%;
+    padding-top:120px;
+  }
+  .hero .wrap{width:100%; padding-bottom:72px;}
+  .hero-eyebrow{
+    display:inline-flex; align-items:center; gap:10px;
+    font-size:0.72rem; color:var(--gold-soft); margin-bottom:22px;
+  }
+  .hero-eyebrow::before{content:""; width:24px; height:1px; background:var(--gold-soft);}
+  h1.headline{
+    font-size:clamp(2.6rem, 6vw, 5rem);
+    line-height:1.03;
+    max-width:14ch;
+  }
+  h1.headline em{font-style:italic; color:var(--teal-bright);}
+  .hero-sub{
+    max-width:46ch; margin:26px 0 36px;
+    color:var(--muted); font-size:1.05rem; line-height:1.65;
+  }
+  .btn{
+    display:inline-flex; align-items:center; gap:10px;
+    background:var(--teal); color:#07120E;
+    padding:16px 28px; text-decoration:none;
+    font-size:0.8rem; letter-spacing:0.07em; text-transform:uppercase;
+    font-weight:800; border:none; cursor:pointer; border-radius:2px;
+    transition:transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  }
+  .btn:hover{background:var(--teal-bright); transform:translateY(-2px); box-shadow:0 12px 28px -12px rgba(95,227,192,0.5);}
+  .btn-outline{
+    background:transparent; color:var(--ink); border:1px solid var(--line);
+  }
+  .btn-outline:hover{border-color:var(--teal-bright); color:var(--teal-bright); background:transparent;}
+
+  .facts-line{
+    display:flex; flex-wrap:wrap; gap:12px 30px; margin-top:46px;
+    padding-top:26px; border-top:1px solid var(--line);
+  }
+  .facts-line li{
+    list-style:none; font-size:0.76rem; color:var(--muted);
+    display:flex; align-items:center; gap:8px;
+  }
+  .facts-line li::before{content:""; width:5px; height:5px; background:var(--teal-bright); border-radius:50%; flex:none;}
+
+  /* ---------- Section shell ---------- */
+  section{padding:100px 0;}
+  .section-head{
+    display:flex; justify-content:space-between; align-items:flex-end; gap:24px;
+    margin-bottom:56px; border-bottom:1px solid var(--line); padding-bottom:26px;
+  }
+  .section-head .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem;
+    letter-spacing:0.16em; text-transform:uppercase; color:var(--gold-soft);
+    display:block; margin-bottom:12px;
+  }
+  .section-head h2{font-size:clamp(1.8rem, 3.4vw, 2.6rem);}
+  .section-head p{max-width:34ch; font-size:0.9rem; color:var(--muted); margin:0;}
+  @media (max-width:700px){ .section-head{flex-direction:column; align-items:flex-start;} }
+
+  /* ---------- Product cards ---------- */
+  .grid-2{display:grid; grid-template-columns:1fr 1fr; gap:28px;}
+  .grid-3{display:grid; grid-template-columns:repeat(3,1fr); gap:28px;}
+  @media (max-width:900px){ .grid-2, .grid-3{grid-template-columns:1fr;} }
+
+  .product-card{
+    background:var(--panel); border:1px solid var(--line);
+    display:flex; flex-direction:column; overflow:hidden;
+    transition:border-color 0.25s ease;
+  }
+  .product-card:hover{border-color:rgba(79,199,170,0.4);}
+  .product-media{
+    aspect-ratio:4/3.1; overflow:hidden; position:relative;
+    background:#000;
+  }
+  .product-media img{
+    width:100%; height:100%; object-fit:cover;
+    transition:transform 0.5s ease;
+  }
+  .product-card:hover .product-media img{transform:scale(1.045);}
+  .product-media .code{
+    position:absolute; top:16px; left:16px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.64rem; letter-spacing:0.09em;
+    color:rgba(245,246,243,0.85);
+    background:rgba(7,8,10,0.55); padding:5px 9px; backdrop-filter:blur(4px);
+  }
+  .product-body{padding:28px 26px 6px;}
+  .product-body .kicker{
+    font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.12em;
+    text-transform:uppercase; color:var(--teal-bright);
+  }
+  .product-body h3{font-size:1.5rem; margin:10px 0 12px;}
+  .product-body p.desc{font-size:0.88rem; line-height:1.65; color:var(--muted); margin:0 0 22px;}
+  .spec-table{width:100%; border-collapse:collapse; font-family:'IBM Plex Mono', monospace; font-size:0.74rem;}
+  .spec-table tr{border-top:1px solid var(--line);}
+  .spec-table tr:first-child{border-top:none;}
+  .spec-table td{padding:10px 0; color:var(--ink);}
+  .spec-table td:first-child{color:var(--muted); text-transform:uppercase; letter-spacing:0.04em; width:52%;}
+  .spec-table td:last-child{text-align:right; font-weight:500;}
+  .product-foot{padding:22px 26px 28px;}
+  .link-btn{
+    display:inline-flex; align-items:center; gap:8px;
+    font-size:0.76rem; letter-spacing:0.07em; text-transform:uppercase;
+    color:var(--teal-bright); text-decoration:none; font-weight:700;
+  }
+  .link-btn::after{content:"→"; transition:transform 0.2s ease;}
+  .link-btn:hover::after{transform:translateX(4px);}
+
+  /* halavit strip */
+  .partner-strip{
+    background:radial-gradient(ellipse 60% 50% at 50% 0%, rgba(203,161,53,0.10), transparent 60%), var(--bg);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+  }
+  .partner-strip .section-head .eyebrow{color:var(--gold-soft);}
+  .partner-strip .product-media img{object-fit:contain; background:#0d0f10; padding:18px;}
+
+  /* ---------- Story ---------- */
+  .story-grid{display:grid; grid-template-columns:0.9fr 1.1fr; gap:64px; align-items:start;}
+  @media (max-width:900px){ .story-grid{grid-template-columns:1fr;} }
+  .story-copy p{
+    font-family:'Bodoni Moda', serif; font-weight:400;
+    font-size:1.3rem; line-height:1.6; color:var(--ink); margin:0 0 24px;
+  }
+  .story-copy em{font-style:italic; color:var(--teal-bright);}
+  .stat-row{display:flex; margin-top:36px; border-top:1px solid var(--line);}
+  .stat{flex:1; padding:22px 20px 0 0; border-right:1px solid var(--line);}
+  .stat:last-child{border-right:none;}
+  .stat .n{font-family:'Bodoni Moda', serif; font-size:2rem; color:var(--teal-bright);}
+  .stat .l{font-family:'IBM Plex Mono', monospace; font-size:0.64rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--muted); display:block; margin-top:8px;}
+
+  .pillars{display:flex; flex-direction:column;}
+  .pillar{display:grid; grid-template-columns:56px 1fr; gap:20px; padding:28px 0; border-top:1px solid var(--line);}
+  .pillar:last-child{border-bottom:1px solid var(--line);}
+  .pillar .idx{font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--gold-soft); padding-top:4px;}
+  .pillar h3{font-size:1.3rem; margin-bottom:8px;}
+  .pillar p{margin:0; font-size:0.9rem; color:var(--muted); max-width:52ch; line-height:1.65;}
+
+  /* ---------- Waitlist ---------- */
+  .waitlist{
+    background:var(--panel); border:1px solid var(--line);
+    padding:64px; display:grid; grid-template-columns:1fr 1fr; gap:56px;
+    position:relative; overflow:hidden;
+  }
+  .waitlist::before{
+    content:""; position:absolute; inset:0;
+    background:radial-gradient(circle at 90% 10%, rgba(79,199,170,0.14), transparent 55%);
+    pointer-events:none;
+  }
+  @media (max-width:820px){ .waitlist{grid-template-columns:1fr; padding:36px 24px;} }
+  .waitlist-intro .eyebrow{
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--gold-soft); display:block; margin-bottom:16px;
+  }
+  .waitlist-intro h2{font-size:clamp(1.7rem,3vw,2.3rem); margin-bottom:18px;}
+  .waitlist-intro p{font-size:0.92rem; color:var(--muted); line-height:1.65; max-width:38ch;}
+  form{display:flex; flex-direction:column; gap:18px; position:relative;}
+  label{
+    font-family:'IBM Plex Mono', monospace; font-size:0.64rem; letter-spacing:0.09em;
+    text-transform:uppercase; color:var(--muted); margin-bottom:7px; display:block;
+  }
+  input{
+    width:100%; border:none; border-bottom:1px solid var(--line); background:transparent;
+    padding:11px 2px; font-family:'Manrope', sans-serif; font-size:0.95rem; color:var(--ink);
+  }
+  input::placeholder{color:rgba(154,165,160,0.5);}
+  input:focus{border-bottom-color:var(--teal-bright);}
+  .form-note{font-size:0.72rem; color:var(--muted); margin-top:6px;}
+  #formStatus{font-size:0.85rem; color:var(--teal-bright); margin-top:8px; min-height:1.2em;}
+
+  /* ---------- Footer ---------- */
+  footer{background:#000; border-top:1px solid var(--line); padding:64px 0 28px;}
+  .footer-top{
+    display:flex; justify-content:space-between; gap:40px; flex-wrap:wrap;
+    padding-bottom:36px; border-bottom:1px solid var(--line); margin-bottom:24px;
+  }
+  .footer-brand img{height:28px;}
+  .footer-cols{display:flex; gap:64px; flex-wrap:wrap;}
+  .footer-col h4{
+    font-family:'IBM Plex Mono', monospace; font-size:0.64rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--gold-soft); margin:0 0 14px;
+  }
+  .footer-col a{display:block; text-decoration:none; font-size:0.85rem; color:var(--muted); margin-bottom:9px; transition:color 0.2s ease;}
+  .footer-col a:hover{color:var(--teal-bright);}
+  .footer-bottom{
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:10px;
+    font-size:0.7rem; color:var(--muted);
+  }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="mono">Waiting list <span class="dot">·</span> Sweden</span>
+    <span class="mono">info@veranutrition.co</span>
+  </div>
+</div>
+
+<header>
+  <nav class="nav">
+    <a href="#hero" class="brand"><img src="assets/logo.png" alt="VERA Nutrition"></a>
+    <ul class="navlinks">
+      <li><a href="#sortiment">Selection</a></li>
+      <li><a href="#halavit">HalaVit</a></li>
+      <li><a href="#historia">Story</a></li>
+      <li><a href="#vantelista" class="nav-cta">Waitlist</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section class="hero" id="hero">
+    <div class="wrap">
+      <span class="hero-eyebrow mono">First batch is limited</span>
+      <h1 class="headline">Pure creatine.<br>Pure whey.<br><em>Purity</em> in every gram.</h1>
+      <p class="hero-sub">VERA Nutrition is launching soon with carefully selected products, exclusive apparel, and Halal certified vitamins &amp; collagen — made in Sweden, in partnership with HalaVit.</p>
+      <a href="#vantelista" class="btn">Place me in the queue</a>
+      <ul class="facts-line">
+        <li>Made in Sweden</li>
+        <li>Independently tested</li>
+        <li>No middleman</li>
+        <li>Nordic's first Halal collagen</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- CORE COLLECTION -->
+  <section id="sortiment">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">VERA Core Collection</span>
+          <h2>Pure essentials for performance.</h2>
+        </div>
+        <p>Two staples, manufactured in Sweden, tested by an independent third party before they ever reach you.</p>
+      </div>
+      <div class="grid-2">
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="code">CRE&#8209;500 · UNFLAVOURED</span>
+            <img src="assets/creatine-splash.jpg" alt="VERA Pure Creatine Monohydrate">
+          </div>
+          <div class="product-body">
+            <span class="kicker">Creatine</span>
+            <h3>Pure Creatine Monohydrate</h3>
+            <p class="desc">Boost your strength, power, and performance. Made in Sweden with high-quality ingredients for optimal muscle growth.</p>
+            <table class="spec-table">
+              <tr><td>Net weight</td><td>0.5 kg</td></tr>
+              <tr><td>Servings</td><td>100</td></tr>
+              <tr><td>Per serving</td><td>5 g</td></tr>
+              <tr><td>Ingredients</td><td>100% Creatine monohydrate</td></tr>
+            </table>
+          </div>
+          <div class="product-foot"><a href="#vantelista" class="link-btn">Place me in queue</a></div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="code">WHE&#8209;1000 · VANILLA</span>
+            <img src="assets/hero-group.jpg" alt="VERA 100% Whey Protein" style="object-position: 20% 30%;">
+          </div>
+          <div class="product-body">
+            <span class="kicker">Whey Protein</span>
+            <h3>100% Whey Protein</h3>
+            <p class="desc">Manufactured in Sweden using premium-quality ingredients, for muscle growth, recovery, and daily performance.</p>
+            <table class="spec-table">
+              <tr><td>Net weight</td><td>1 kg</td></tr>
+              <tr><td>Servings</td><td>33</td></tr>
+              <tr><td>Protein / serving</td><td>25 g</td></tr>
+              <tr><td>Flavour</td><td>Vanilla</td></tr>
+            </table>
+          </div>
+          <div class="product-foot"><a href="#vantelista" class="link-btn">Place me in queue</a></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- HALAVIT -->
+  <section id="halavit" class="partner-strip">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">In Partnership with HalaVit</span>
+          <h2>Nordic's first Halal collagen &amp; vitamin line.</h2>
+        </div>
+        <p>Certified halal bovine collagen and advanced day &amp; night formulas, tailored for ultimate wellness.</p>
+      </div>
+      <div class="grid-3">
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="code">AM RISE</span>
+            <img src="assets/am-rise.jpg" alt="HalaVit AM Rise Morning Formula">
+          </div>
+          <div class="product-body">
+            <span class="kicker">Morning Formula</span>
+            <h3>AM RISE Vitamins</h3>
+            <p class="desc">A complete morning complex with A, C, D, E, B-Complex, plus Panax Ginseng and CoQ10 for energy and clarity.</p>
+            <table class="spec-table">
+              <tr><td>Quantity</td><td>120 tablets</td></tr>
+              <tr><td>Certification</td><td>Halal &amp; GMP</td></tr>
+              <tr><td>Free from</td><td>Gluten, nuts, lactose</td></tr>
+            </table>
+          </div>
+          <div class="product-foot"><a href="#vantelista" class="link-btn">Place me in queue</a></div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="code">PM REST</span>
+            <img src="assets/pm-rest.jpg" alt="HalaVit PM Rest Night Formula">
+          </div>
+          <div class="product-body">
+            <span class="kicker">Night Formula</span>
+            <h3>PM REST Vitamins</h3>
+            <p class="desc">Magnesium, Zinc, KSM-66® Ashwagandha, Valerian Root and Lemon Balm for overnight recovery and relaxation.</p>
+            <table class="spec-table">
+              <tr><td>Quantity</td><td>120 tablets</td></tr>
+              <tr><td>Certification</td><td>Halal &amp; GMP</td></tr>
+              <tr><td>Free from</td><td>Gluten, nuts, seafood</td></tr>
+            </table>
+          </div>
+          <div class="product-foot"><a href="#vantelista" class="link-btn">Place me in queue</a></div>
+        </article>
+
+        <article class="product-card">
+          <div class="product-media">
+            <span class="code">COLLAGEN</span>
+            <img src="assets/collagen.jpg" alt="HalaVit Halal Bovine Collagen">
+          </div>
+          <div class="product-body">
+            <span class="kicker">Liquid Collagen</span>
+            <h3>Halal Bovine Collagen</h3>
+            <p class="desc">10,000 mg hydrolysed bovine peptides (Type 1 &amp; 3) with Hyaluronic Acid and Vitamin C, D, B-Complex.</p>
+            <table class="spec-table">
+              <tr><td>Net weight</td><td>500 ml</td></tr>
+              <tr><td>Collagen</td><td>10,000 mg</td></tr>
+              <tr><td>Flavour</td><td>Berry, sugar-free</td></tr>
+            </table>
+          </div>
+          <div class="product-foot"><a href="#vantelista" class="link-btn">Place me in queue</a></div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section id="historia">
+    <div class="wrap">
+      <div class="section-head">
+        <div>
+          <span class="eyebrow">Our Story</span>
+          <h2>It didn't start with a product.</h2>
+        </div>
+      </div>
+      <div class="story-grid">
+        <div class="story-copy">
+          <p>VERA started with people. Through our coaching business, we helped over 1,500 clients around the world — and one question kept coming up: <em>“Where can I buy supplements I can actually trust?”</em></p>
+          <p>So we built the company we wished existed. We carefully selected a manufacturing partner in Sweden and had the final product tested by an independent third party. Now, through our partnership with HalaVit, we extend this promise to Nordic's first certified Halal collagen and vitamin line.</p>
+          <div class="stat-row">
+            <div class="stat"><span class="n">1,500+</span><span class="l">Clients through coaching</span></div>
+            <div class="stat"><span class="n">SE</span><span class="l">Manufacturing &amp; certified halal</span></div>
+            <div class="stat"><span class="n">3rd</span><span class="l">Party quality control</span></div>
+          </div>
+        </div>
+        <div class="pillars">
+          <div class="pillar">
+            <span class="idx mono">01</span>
+            <div><h3>Knowledge</h3><p>Informed people make better decisions. Education came before the products.</p></div>
+          </div>
+          <div class="pillar">
+            <span class="idx mono">02</span>
+            <div><h3>Trust</h3><p>Trust grows slowly, when words and actions stay consistent over time.</p></div>
+          </div>
+          <div class="pillar">
+            <span class="idx mono">03</span>
+            <div><h3>Quality</h3><p>Quality is a way of thinking, not a step in the manufacturing process.</p></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WAITLIST -->
+  <section id="vantelista">
+    <div class="wrap">
+      <div class="waitlist">
+        <div class="waitlist-intro">
+          <span class="eyebrow">The first batch is limited</span>
+          <h2>Get in line before we open.</h2>
+          <p>You'll receive the link to the sale before it goes live — new arrivals, the HalaVit line, and the clothing collection.</p>
+        </div>
+        <form id="waitlistForm">
+          <div>
+            <label for="fullname">Full name</label>
+            <input type="text" id="fullname" name="fullname" required autocomplete="name">
+          </div>
+          <div>
+            <label for="email">Email address</label>
+            <input type="email" id="email" name="email" required autocomplete="email">
+          </div>
+          <div>
+            <label for="phone">Phone number</label>
+            <input type="tel" id="phone" name="phone" autocomplete="tel">
+          </div>
+          <button type="submit" class="btn" style="margin-top:8px; align-self:flex-start;">Place me in queue</button>
+          <p class="form-note">An email when we open. Unsubscribe anytime.</p>
+          <p id="formStatus" role="status"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <a href="#hero" class="footer-brand"><img src="assets/logo.png" alt="VERA Nutrition"></a>
+      <div class="footer-cols">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="#sortiment">Selection</a>
+          <a href="#halavit">HalaVit</a>
+          <a href="#historia">Story</a>
+          <a href="#vantelista">Waitlist</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="mailto:info@veranutrition.co">info@veranutrition.co</a>
+          <a href="tel:+46739847253">+46 73 984 72 53</a>
+        </div>
+        <div class="footer-col">
+          <h4>Follow</h4>
+          <a href="https://www.instagram.com/veranutrition87" target="_blank" rel="noopener">Instagram</a>
+          <a href="https://www.tiktok.com/@veranutrition87" target="_blank" rel="noopener">TikTok</a>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 VERA Nutrition. Dietary supplements are not a substitute for a varied diet.</span>
+      <span>Vera for everyone</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+  document.getElementById('waitlistForm').addEventListener('submit', function(e){
+    e.preventDefault();
+    var status = document.getElementById('formStatus');
+    var name = document.getElementById('fullname').value.trim();
+    status.textContent = "Thanks" + (name ? ", " + name : "") + " — you're on the list. We'll email you before the sale opens.";
+    this.reset();
+  });
+</script>
+
+</body>
+</html>
