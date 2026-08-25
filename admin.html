@@ -120,9 +120,10 @@
     <!-- GATE -->
     <div class="gate" id="gate">
       <h1>Admin access</h1>
-      <p>Enter your admin key to view the waitlist.</p>
-      <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off">
-      <button class="btn" id="unlockBtn">Unlock</button>
+      <p>Sign in to view the waitlist.</p>
+      <input type="text" id="userInput" placeholder="Username" autocomplete="username">
+      <input type="password" id="keyInput" placeholder="Password" autocomplete="current-password">
+      <button class="btn" id="unlockBtn">Sign in</button>
       <div class="gate-error" id="gateError"></div>
     </div>
 
@@ -161,10 +162,13 @@
   // ---- CONFIG ----
   // Paste your Google Apps Script Web App URL here (ends in /exec).
   const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+  // Choose the username you'll log in with. The password is the ADMIN_KEY you set in Code.gs.
+  const ADMIN_USERNAME = "admin";
 
   const gate = document.getElementById('gate');
   const dashboard = document.getElementById('dashboard');
   const navActions = document.getElementById('navActions');
+  const userInput = document.getElementById('userInput');
   const keyInput = document.getElementById('keyInput');
   const unlockBtn = document.getElementById('unlockBtn');
   const gateError = document.getElementById('gateError');
@@ -280,29 +284,35 @@
     renderTable();
   }
 
-  async function tryUnlock(key){
+  async function tryUnlock(username, key){
     gateError.textContent = '';
     unlockBtn.textContent = 'Checking…';
     unlockBtn.disabled = true;
     try {
+      if (username !== ADMIN_USERNAME){
+        throw new Error('bad-credentials');
+      }
       await loadEntries(key);
+      sessionStorage.setItem('vera_admin_user', username);
       sessionStorage.setItem('vera_admin_key', key);
       gate.style.display = 'none';
       dashboard.style.display = 'block';
       navActions.style.display = 'flex';
     } catch (err) {
-      gateError.textContent = 'Could not verify key — check it and try again.';
+      gateError.textContent = 'Incorrect username or password.';
     } finally {
-      unlockBtn.textContent = 'Unlock';
+      unlockBtn.textContent = 'Sign in';
       unlockBtn.disabled = false;
     }
   }
 
   unlockBtn.addEventListener('click', () => {
+    const username = userInput.value.trim();
     const key = keyInput.value.trim();
-    if (key) tryUnlock(key);
+    if (username && key) tryUnlock(username, key);
   });
   keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlockBtn.click(); });
+  userInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') keyInput.focus(); });
 
   searchInput.addEventListener('input', renderTable);
   exportBtn.addEventListener('click', downloadCSV);
@@ -311,21 +321,24 @@
     if (key) loadEntries(key).catch(() => {});
   });
   logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('vera_admin_user');
     sessionStorage.removeItem('vera_admin_key');
     location.reload();
   });
 
-  // Auto-unlock if a key is already stored for this session
+  // Auto-unlock if credentials are already stored for this session
   (function init(){
     if (WAITLIST_ENDPOINT.indexOf('PASTE_YOUR') === 0){
       tableWrap.innerHTML = '';
       gate.innerHTML = '<h1>Almost there</h1><p>The admin page needs your Apps Script Web App URL. Open <code>admin.html</code> and <code>index.html</code>, and replace <code>WAITLIST_ENDPOINT</code> with your deployed URL.</p>';
       return;
     }
-    const saved = sessionStorage.getItem('vera_admin_key');
-    if (saved){
-      keyInput.value = saved;
-      tryUnlock(saved);
+    const savedUser = sessionStorage.getItem('vera_admin_user');
+    const savedKey = sessionStorage.getItem('vera_admin_key');
+    if (savedUser && savedKey){
+      userInput.value = savedUser;
+      keyInput.value = savedKey;
+      tryUnlock(savedUser, savedKey);
     }
   })();
 </script>
