@@ -601,6 +601,7 @@
           <h4>Contact</h4>
           <a href="mailto:info@veranutrition.co">info@veranutrition.co</a>
           <a href="tel:+46739847253">+46 73 984 72 53</a>
+          <a href="admin.html" style="opacity:0.45; font-size:0.74rem;">Admin</a>
         </div>
         <div class="footer-col">
           <h4>Follow</h4>
@@ -617,12 +618,51 @@
 </footer>
 
 <script>
+  // Paste your Google Apps Script Web App URL here (ends in /exec). See /apps-script/Code.gs for setup.
+  const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
   document.getElementById('waitlistForm').addEventListener('submit', function(e){
     e.preventDefault();
+    var form = this;
     var status = document.getElementById('formStatus');
     var name = document.getElementById('fullname').value.trim();
-    status.textContent = "Thanks" + (name ? ", " + name : "") + " — you're on the list. We'll email you before the sale opens.";
-    this.reset();
+    var payload = {
+      fullname: name,
+      email: document.getElementById('email').value.trim(),
+      phone: document.getElementById('phone').value.trim()
+    };
+
+    var submitBtn = form.querySelector('button[type="submit"]');
+    submitBtn.disabled = true;
+
+    function finish(message){
+      status.textContent = message;
+      submitBtn.disabled = false;
+      form.reset();
+    }
+
+    if (WAITLIST_ENDPOINT.indexOf('PASTE_YOUR') === 0){
+      // Endpoint not configured yet — just confirm locally so the demo still works.
+      finish("Thanks" + (name ? ", " + name : "") + " — you're on the list. We'll email you before the sale opens.");
+      return;
+    }
+
+    fetch(WAITLIST_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
+      body: JSON.stringify(payload)
+    })
+      .then(function(res){ return res.json(); })
+      .then(function(data){
+        if (data && data.ok){
+          finish("Thanks" + (name ? ", " + name : "") + " — you're on the list. We'll email you before the sale opens.");
+        } else {
+          finish("Something went wrong — please try again in a moment.");
+        }
+      })
+      .catch(function(){
+        finish("Something went wrong — please try again in a moment.");
+      });
   });
 </script>
 

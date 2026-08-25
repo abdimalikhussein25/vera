@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>VERA Nutrition — Waitlist Admin</title>
+<link rel="icon" href="assets/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Manrope:wght@400;500;600;700;800&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#FFFFFF; --bg-alt:#F6F8F7; --tint-teal:#E7F6F1; --ink:#10181A; --muted:#5E6B67;
+    --teal:#15997C; --teal-deep:#0D7A62; --teal-bright:#1FC29E;
+    --gold:#B9903A; --line:#E6EBE8;
+    --shadow-sm:0 1px 2px rgba(16,24,22,0.05);
+    --shadow-md:0 14px 32px -18px rgba(16,24,22,0.18);
+    --max:1220px;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0; background:var(--bg-alt); color:var(--ink); font-family:'Manrope', sans-serif; -webkit-font-smoothing:antialiased;}
+  h1,h2{font-family:'Playfair Display', serif; font-weight:700; margin:0; color:var(--ink);}
+  .mono{font-family:'IBM Plex Mono', monospace; letter-spacing:0.06em; text-transform:uppercase;}
+  a{color:inherit;}
+  .wrap{max-width:var(--max); margin:0 auto; padding:0 28px;}
+
+  /* header */
+  header{background:#fff; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:20;}
+  .nav{display:flex; align-items:center; justify-content:space-between; padding:16px 28px; max-width:var(--max); margin:0 auto;}
+  .brand{display:flex; align-items:center; gap:14px; text-decoration:none;}
+  .brand img{height:26px;}
+  .brand .tag{font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--muted); border-left:1px solid var(--line); padding-left:14px;}
+  .nav-actions{display:flex; gap:12px; align-items:center;}
+  .btn{
+    display:inline-flex; align-items:center; gap:8px; background:var(--teal); color:#fff;
+    padding:10px 18px; border-radius:999px; text-decoration:none; font-size:0.8rem; font-weight:700;
+    border:none; cursor:pointer; transition:background 0.2s ease;
+  }
+  .btn:hover{background:var(--teal-deep);}
+  .btn-ghost{background:transparent; color:var(--ink); border:1px solid var(--line);}
+  .btn-ghost:hover{background:var(--bg-alt); color:var(--ink);}
+
+  main{padding:40px 0 80px;}
+
+  /* gate */
+  .gate{
+    max-width:420px; margin:120px auto; background:#fff; border:1px solid var(--line);
+    border-radius:20px; padding:40px; box-shadow:var(--shadow-md); text-align:center;
+  }
+  .gate h1{font-size:1.6rem; margin-bottom:10px;}
+  .gate p{color:var(--muted); font-size:0.9rem; margin:0 0 24px;}
+  .gate input{
+    width:100%; border:1px solid var(--line); border-radius:12px; padding:13px 16px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.9rem; margin-bottom:14px;
+  }
+  .gate input:focus{outline:2px solid var(--teal); border-color:transparent;}
+  .gate .btn{width:100%; justify-content:center; padding:13px;}
+  .gate-error{color:#B3413A; font-size:0.82rem; margin-top:14px; min-height:1.2em;}
+
+  /* stat cards */
+  .stats{display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-bottom:32px;}
+  @media (max-width:700px){ .stats{grid-template-columns:1fr;} }
+  .stat-card{background:#fff; border:1px solid var(--line); border-radius:18px; padding:24px 26px; box-shadow:var(--shadow-sm);}
+  .stat-card .n{font-family:'Playfair Display', serif; font-size:2.4rem; color:var(--teal-deep);}
+  .stat-card .l{font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); margin-top:6px; display:block;}
+
+  /* toolbar */
+  .toolbar{display:flex; justify-content:space-between; align-items:center; gap:16px; margin-bottom:20px; flex-wrap:wrap;}
+  .search{
+    flex:1; min-width:220px; border:1px solid var(--line); border-radius:12px; padding:11px 16px;
+    font-family:'Manrope', sans-serif; font-size:0.9rem; background:#fff;
+  }
+  .search:focus{outline:2px solid var(--teal); border-color:transparent;}
+  .toolbar-actions{display:flex; gap:10px;}
+
+  /* table */
+  .table-card{background:#fff; border:1px solid var(--line); border-radius:18px; overflow:hidden; box-shadow:var(--shadow-sm);}
+  table{width:100%; border-collapse:collapse;}
+  thead th{
+    text-align:left; font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--muted); padding:16px 20px; border-bottom:1px solid var(--line);
+    background:var(--bg-alt); cursor:pointer; white-space:nowrap; user-select:none;
+  }
+  thead th:hover{color:var(--teal-deep);}
+  thead th .arrow{opacity:0.4; font-size:0.7rem; margin-left:4px;}
+  tbody td{padding:16px 20px; border-bottom:1px solid var(--line); font-size:0.9rem; vertical-align:top;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr:hover{background:var(--bg-alt);}
+  .rank{font-family:'IBM Plex Mono', monospace; color:var(--muted); font-size:0.82rem;}
+  .name-cell{font-weight:700;}
+  .email-cell{color:var(--teal-deep);}
+  .muted-cell{color:var(--muted); font-size:0.82rem;}
+  .empty-state{padding:60px 20px; text-align:center; color:var(--muted);}
+  .empty-state h2{font-size:1.2rem; margin-bottom:8px; color:var(--ink);}
+
+  .loading{padding:60px 20px; text-align:center; color:var(--muted); font-family:'IBM Plex Mono', monospace; font-size:0.82rem; text-transform:uppercase; letter-spacing:0.08em;}
+
+  footer.note{max-width:var(--max); margin:24px auto 0; padding:0 28px; font-size:0.76rem; color:var(--muted);}
+</style>
+</head>
+<body>
+
+<header>
+  <nav class="nav">
+    <a href="index.html" class="brand">
+      <img src="assets/logo.png" alt="VERA Nutrition">
+      <span class="tag">Waitlist Admin</span>
+    </a>
+    <div class="nav-actions" id="navActions" style="display:none;">
+      <button class="btn btn-ghost" id="refreshBtn">Refresh</button>
+      <button class="btn btn-ghost" id="logoutBtn">Log out</button>
+    </div>
+  </nav>
+</header>
+
+<main>
+  <div class="wrap">
+
+    <!-- GATE -->
+    <div class="gate" id="gate">
+      <h1>Admin access</h1>
+      <p>Enter your admin key to view the waitlist.</p>
+      <input type="password" id="keyInput" placeholder="Admin key" autocomplete="off">
+      <button class="btn" id="unlockBtn">Unlock</button>
+      <div class="gate-error" id="gateError"></div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashboard" style="display:none;">
+
+      <div class="stats">
+        <div class="stat-card"><span class="n" id="statTotal">—</span><span class="l">Total signups</span></div>
+        <div class="stat-card"><span class="n" id="statWeek">—</span><span class="l">New this week</span></div>
+        <div class="stat-card"><span class="n" id="statToday">—</span><span class="l">New today</span></div>
+      </div>
+
+      <div class="toolbar">
+        <input type="text" class="search" id="searchInput" placeholder="Search by name or email…">
+        <div class="toolbar-actions">
+          <button class="btn btn-ghost" id="exportBtn">Export CSV</button>
+        </div>
+      </div>
+
+      <div class="table-card">
+        <div id="tableWrap">
+          <div class="loading">Loading entries…</div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</main>
+
+<footer class="note">
+  <div class="wrap">Sorted by sign-up time — most recent first. Click a column header to change sort order.</div>
+</footer>
+
+<script>
+  // ---- CONFIG ----
+  // Paste your Google Apps Script Web App URL here (ends in /exec).
+  const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
+
+  const gate = document.getElementById('gate');
+  const dashboard = document.getElementById('dashboard');
+  const navActions = document.getElementById('navActions');
+  const keyInput = document.getElementById('keyInput');
+  const unlockBtn = document.getElementById('unlockBtn');
+  const gateError = document.getElementById('gateError');
+  const tableWrap = document.getElementById('tableWrap');
+  const searchInput = document.getElementById('searchInput');
+  const exportBtn = document.getElementById('exportBtn');
+  const refreshBtn = document.getElementById('refreshBtn');
+  const logoutBtn = document.getElementById('logoutBtn');
+
+  let allEntries = [];
+  let sortKey = 'timestamp';
+  let sortDir = -1; // -1 = newest first
+
+  function fmtDate(iso){
+    const d = new Date(iso);
+    if (isNaN(d)) return String(iso);
+    return d.toLocaleString(undefined, { year:'numeric', month:'short', day:'numeric', hour:'2-digit', minute:'2-digit' });
+  }
+
+  function isSameDay(a,b){
+    return a.getFullYear()===b.getFullYear() && a.getMonth()===b.getMonth() && a.getDate()===b.getDate();
+  }
+
+  function renderStats(entries){
+    const now = new Date();
+    const weekAgo = new Date(now.getTime() - 7*24*60*60*1000);
+    document.getElementById('statTotal').textContent = entries.length;
+    document.getElementById('statWeek').textContent = entries.filter(e => new Date(e.timestamp) >= weekAgo).length;
+    document.getElementById('statToday').textContent = entries.filter(e => isSameDay(new Date(e.timestamp), now)).length;
+  }
+
+  function renderTable(){
+    const q = searchInput.value.trim().toLowerCase();
+    let rows = allEntries.filter(e =>
+      !q || (e.fullname||'').toLowerCase().includes(q) || (e.email||'').toLowerCase().includes(q)
+    );
+    rows = rows.slice().sort((a,b) => {
+      let av = a[sortKey] || '', bv = b[sortKey] || '';
+      if (sortKey === 'timestamp'){ av = new Date(av).getTime(); bv = new Date(bv).getTime(); }
+      else { av = String(av).toLowerCase(); bv = String(bv).toLowerCase(); }
+      if (av < bv) return -1 * sortDir;
+      if (av > bv) return 1 * sortDir;
+      return 0;
+    });
+
+    if (rows.length === 0){
+      tableWrap.innerHTML = '<div class="empty-state"><h2>No signups yet</h2><p>New waitlist entries will show up here automatically.</p></div>';
+      return;
+    }
+
+    const arrow = (key) => sortKey === key ? (sortDir === -1 ? '↓' : '↑') : '';
+    let html = '<table><thead><tr>' +
+      '<th style="width:56px;">#</th>' +
+      '<th data-key="fullname">Full name <span class="arrow">'+arrow('fullname')+'</span></th>' +
+      '<th data-key="email">Email <span class="arrow">'+arrow('email')+'</span></th>' +
+      '<th data-key="phone">Phone <span class="arrow">'+arrow('phone')+'</span></th>' +
+      '<th data-key="timestamp">Joined <span class="arrow">'+arrow('timestamp')+'</span></th>' +
+      '</tr></thead><tbody>';
+
+    rows.forEach((e, i) => {
+      html += '<tr>' +
+        '<td class="rank">'+(i+1)+'</td>' +
+        '<td class="name-cell">'+escapeHtml(e.fullname || '—')+'</td>' +
+        '<td class="email-cell">'+escapeHtml(e.email || '—')+'</td>' +
+        '<td class="muted-cell">'+escapeHtml(e.phone || '—')+'</td>' +
+        '<td class="muted-cell">'+fmtDate(e.timestamp)+'</td>' +
+        '</tr>';
+    });
+    html += '</tbody></table>';
+    tableWrap.innerHTML = html;
+
+    tableWrap.querySelectorAll('th[data-key]').forEach(th => {
+      th.addEventListener('click', () => {
+        const key = th.getAttribute('data-key');
+        if (sortKey === key) sortDir *= -1; else { sortKey = key; sortDir = key === 'timestamp' ? -1 : 1; }
+        renderTable();
+      });
+    });
+  }
+
+  function escapeHtml(str){
+    return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+  }
+
+  function toCSV(entries){
+    const header = ['Full name','Email','Phone','Joined'];
+    const lines = [header.join(',')];
+    entries.forEach(e => {
+      const row = [e.fullname, e.email, e.phone, fmtDate(e.timestamp)]
+        .map(v => '"' + String(v||'').replace(/"/g,'""') + '"');
+      lines.push(row.join(','));
+    });
+    return lines.join('\n');
+  }
+
+  function downloadCSV(){
+    const blob = new Blob([toCSV(allEntries)], { type:'text/csv;charset=utf-8;' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'vera-waitlist.csv';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  async function loadEntries(key){
+    tableWrap.innerHTML = '<div class="loading">Loading entries…</div>';
+    const res = await fetch(WAITLIST_ENDPOINT + '?key=' + encodeURIComponent(key));
+    const data = await res.json();
+    if (!data.ok) throw new Error(data.error || 'Request failed');
+    allEntries = data.entries || [];
+    renderStats(allEntries);
+    renderTable();
+  }
+
+  async function tryUnlock(key){
+    gateError.textContent = '';
+    unlockBtn.textContent = 'Checking…';
+    unlockBtn.disabled = true;
+    try {
+      await loadEntries(key);
+      sessionStorage.setItem('vera_admin_key', key);
+      gate.style.display = 'none';
+      dashboard.style.display = 'block';
+      navActions.style.display = 'flex';
+    } catch (err) {
+      gateError.textContent = 'Could not verify key — check it and try again.';
+    } finally {
+      unlockBtn.textContent = 'Unlock';
+      unlockBtn.disabled = false;
+    }
+  }
+
+  unlockBtn.addEventListener('click', () => {
+    const key = keyInput.value.trim();
+    if (key) tryUnlock(key);
+  });
+  keyInput.addEventListener('keydown', (e) => { if (e.key === 'Enter') unlockBtn.click(); });
+
+  searchInput.addEventListener('input', renderTable);
+  exportBtn.addEventListener('click', downloadCSV);
+  refreshBtn.addEventListener('click', () => {
+    const key = sessionStorage.getItem('vera_admin_key');
+    if (key) loadEntries(key).catch(() => {});
+  });
+  logoutBtn.addEventListener('click', () => {
+    sessionStorage.removeItem('vera_admin_key');
+    location.reload();
+  });
+
+  // Auto-unlock if a key is already stored for this session
+  (function init(){
+    if (WAITLIST_ENDPOINT.indexOf('PASTE_YOUR') === 0){
+      tableWrap.innerHTML = '';
+      gate.innerHTML = '<h1>Almost there</h1><p>The admin page needs your Apps Script Web App URL. Open <code>admin.html</code> and <code>index.html</code>, and replace <code>WAITLIST_ENDPOINT</code> with your deployed URL.</p>';
+      return;
+    }
+    const saved = sessionStorage.getItem('vera_admin_key');
+    if (saved){
+      keyInput.value = saved;
+      tryUnlock(saved);
+    }
+  })();
+</script>
+
+</body>
+</html>
