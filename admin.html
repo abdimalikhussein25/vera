@@ -183,8 +183,9 @@
     <div class="auth-error" id="gateError"></div>
 
     <div class="auth-note" id="setupNote" style="display:none;">
-      Backend not connected yet — open <code>admin.html</code> and set <code>WAITLIST_ENDPOINT</code>
-      to your Google Apps Script URL. See <code>README.md</code>.
+      Backend not connected yet — go to your Vercel project → <b>Storage</b> → create a
+      <b>KV</b> database and connect it, then add an <code>ADMIN_KEY</code> environment variable
+      in <b>Settings → Environment Variables</b> and redeploy. See <code>README.md</code>.
     </div>
   </div>
 </div>
@@ -233,14 +234,14 @@
 
       <div id="setupPanel" style="display:none;">
         <div class="setup-card">
-          <h2>Connect your waitlist backend</h2>
-          <p>This dashboard reads signups from a Google Sheet through a small Apps Script endpoint. Once it's connected, every entry from the site's waitlist form will show up here automatically.</p>
+          <h2>Connect your waitlist storage</h2>
+          <p>This dashboard and the site's waitlist form both talk to <code>/api/waitlist</code>, a small function already included in this project. It just needs a database to write to and a password for this login — both live in your Vercel project settings, no extra service or account needed.</p>
           <ol>
-            <li>Create a Google Sheet and open <b>Extensions → Apps Script</b>.</li>
-            <li>Paste in the code from <code>apps-script/Code.gs</code> in this repo.</li>
-            <li>Set your own <code>ADMIN_KEY</code> in that file — this becomes your admin password.</li>
-            <li>Deploy it as a <b>Web app</b> (Execute as: Me, Access: Anyone).</li>
-            <li>Copy the URL and paste it into <code>WAITLIST_ENDPOINT</code> in both <code>admin.html</code> and <code>index.html</code>.</li>
+            <li>Open your project on <a href="https://vercel.com/dashboard" target="_blank" style="color:var(--teal-deep); font-weight:700;">vercel.com/dashboard</a>.</li>
+            <li>Go to the <b>Storage</b> tab → <b>Create Database</b> → choose <b>KV</b>.</li>
+            <li>Click <b>Connect Project</b> and select this project — Vercel adds the required keys automatically.</li>
+            <li>Go to <b>Settings → Environment Variables</b> and add one: <code>ADMIN_KEY</code> = a password only you know. This becomes your admin login password.</li>
+            <li>Go to <b>Deployments</b> and redeploy the latest one (or push any small change) so the new variables take effect.</li>
           </ol>
         </div>
       </div>
@@ -269,9 +270,8 @@
 
 <script>
   // ---- CONFIG ----
-  // Paste your Google Apps Script Web App URL here (ends in /exec).
-  const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
-  // Choose the username you'll log in with. The password is the ADMIN_KEY you set in Code.gs.
+  const WAITLIST_ENDPOINT = "/api/waitlist";
+  // Choose the username you'll log in with. The password is the ADMIN_KEY env var set in Vercel.
   const ADMIN_USERNAME = "admin";
 
   const authScreen = document.getElementById('authScreen');
@@ -290,14 +290,10 @@
   const refreshBtn = document.getElementById('refreshBtn');
   const logoutBtn = document.getElementById('logoutBtn');
 
-  const backendConfigured = WAITLIST_ENDPOINT.indexOf('PASTE_YOUR') !== 0;
   let allEntries = [];
   let sortKey = 'timestamp';
   let sortDir = -1;
-
-  if (!backendConfigured){
-    setupNote.style.display = 'block';
-  }
+  let backendConfigured = true; // determined on first request; see loadEntries()
 
   function fmtDate(iso){
     const d = new Date(iso);
@@ -391,7 +387,11 @@
     tableWrap.innerHTML = '<div class="loading">Loading entries…</div>';
     const res = await fetch(WAITLIST_ENDPOINT + '?key=' + encodeURIComponent(key));
     const data = await res.json();
-    if (!data.ok) throw new Error(data.error || 'Request failed');
+    if (!data.ok){
+      if (data.error === 'not-configured') { backendConfigured = false; }
+      throw new Error(data.error || 'Request failed');
+    }
+    backendConfigured = true;
     allEntries = data.entries || [];
     renderStats(allEntries);
     renderTable();
@@ -415,8 +415,17 @@
     unlockBtn.disabled = true;
     try {
       if (username !== ADMIN_USERNAME) throw new Error('bad-credentials');
-      if (backendConfigured){
+      try {
         await loadEntries(key);
+      } catch (err) {
+        if (String(err.message) === 'not-configured'){
+          // Backend exists but ADMIN_KEY env var isn't set on Vercel yet — let them in to see setup steps.
+          sessionStorage.setItem('vera_admin_user', username);
+          sessionStorage.setItem('vera_admin_key', key);
+          enterShell();
+          return;
+        }
+        throw err;
       }
       sessionStorage.setItem('vera_admin_user', username);
       sessionStorage.setItem('vera_admin_key', key);

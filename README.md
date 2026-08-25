@@ -1,41 +1,33 @@
 # VERA Nutrition — Landing Page + Waitlist Admin
 
-Static site (`index.html`, `admin.html`, `/assets`). No build step. Deployed on Vercel from
+Static site (`index.html`, `admin.html`, `/assets`) with one small serverless function
+(`/api/waitlist.js`) for storing and reading waitlist signups. Deployed on Vercel from
 `github.com/abdimalikhussein25/vera`.
 
-## Waitlist backend setup (one-time, ~5 minutes)
+## One-time setup: connect storage (~2 minutes)
 
-The waitlist form and the admin dashboard need a place to store signups. This project uses a
-free Google Sheet + Google Apps Script as the backend — no database or paid service required.
+The waitlist form and the admin dashboard both talk to `/api/waitlist`. That function needs a
+database to write to (Vercel KV — free, built into Vercel, no external account) and a password
+for the admin login.
 
-1. Go to [sheets.google.com](https://sheets.google.com) and create a new blank spreadsheet.
-   Name it something like **"VERA Waitlist"**.
-2. In the sheet, go to **Extensions → Apps Script**.
-3. Delete any starter code, and paste in the full contents of
-   [`apps-script/Code.gs`](apps-script/Code.gs) from this repo.
-4. In that code, change this line to a secret only you know:
-   ```js
-   const ADMIN_KEY = 'CHANGE-THIS-TO-YOUR-OWN-SECRET';
-   ```
-5. Click **Deploy → New deployment**.
-   - Type: **Web app**
-   - Execute as: **Me**
-   - Who has access: **Anyone**
-   - Click **Deploy**, then authorize the permissions it asks for.
-6. Copy the **Web app URL** (it ends in `/exec`).
-7. Open both `index.html` and `admin.html` in this project, find the line:
-   ```js
-   const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
-   ```
-   and replace the placeholder with your Web app URL in **both files**.
-8. Commit and push. Vercel will redeploy automatically.
+1. Open your project at [vercel.com/dashboard](https://vercel.com/dashboard).
+2. Go to the **Storage** tab → **Create Database** → choose **KV**.
+3. Click **Connect Project** and select this project. Vercel automatically adds the required
+   environment variables (`KV_REST_API_URL`, `KV_REST_API_TOKEN`, etc.) — nothing to copy by hand.
+4. Go to **Settings → Environment Variables** and add one more:
+   - Key: `ADMIN_KEY`
+   - Value: a password only you know
+5. Go to **Deployments**, open the latest one, and click **Redeploy** (or just push any small
+   change to GitHub) so the new environment variables take effect.
 
-That's it — every waitlist signup now becomes a row in your Google Sheet (with timestamp, name,
-email, phone), and `yoursite.com/admin.html` gives you a branded dashboard on top of it: total
-signups, signups today/this week, search, sortable columns, and CSV export.
+That's it. From then on:
+- Every waitlist signup on the site is stored automatically.
+- `yoursite.com/admin.html` — sign in with **username:** `admin` and **password:** whatever you
+  set as `ADMIN_KEY` — shows total signups, signups today/this week, a searchable + sortable
+  table, and CSV export.
 
-The admin key from step 4 is what you'll type into `admin.html` to unlock the dashboard —
-keep it private, and change it any time by editing the Apps Script and redeploying.
+You can change the admin username in `admin.html` (`ADMIN_USERNAME` near the top of the script),
+and change the password any time by updating `ADMIN_KEY` in Vercel and redeploying.
 
 ## Deploying updates
 

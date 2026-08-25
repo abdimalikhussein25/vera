@@ -618,9 +618,6 @@
 </footer>
 
 <script>
-  // Paste your Google Apps Script Web App URL here (ends in /exec). See /apps-script/Code.gs for setup.
-  const WAITLIST_ENDPOINT = "PASTE_YOUR_APPS_SCRIPT_URL_HERE";
-
   document.getElementById('waitlistForm').addEventListener('submit', function(e){
     e.preventDefault();
     var form = this;
@@ -641,15 +638,9 @@
       form.reset();
     }
 
-    if (WAITLIST_ENDPOINT.indexOf('PASTE_YOUR') === 0){
-      // Endpoint not configured yet — just confirm locally so the demo still works.
-      finish("Thanks" + (name ? ", " + name : "") + " — you're on the list. We'll email you before the sale opens.");
-      return;
-    }
-
-    fetch(WAITLIST_ENDPOINT, {
+    fetch('/api/waitlist', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' }, // avoids CORS preflight on Apps Script
+      headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(payload)
     })
       .then(function(res){ return res.json(); })
